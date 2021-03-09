@@ -4,7 +4,6 @@
         <div class="input-group mb-3" style="width: 30%;">
             <input v-model="limit"  type="text" class="form-control" placeholder="Number of records...">
             <div class="input-group-append">
-                <span class="input-group-text">/ {{todosLength}}</span>
                 <button v-on:click="submitFilter()" type="button" class="btn btn-outline-success">Filter</button>
             </div>
         </div>
@@ -24,7 +23,12 @@ export default {
     methods: {
         ...mapActions(["filterTodos"]),
         submitFilter() {
-            this.filterTodos(this.limit);
+            if (this.limit > 200) {
+                alert("Please, enter number <= 200");
+            }
+            else {
+                this.filterTodos(this.limit);
+            }
         }
     },
     computed: mapGetters(["todosLength"])

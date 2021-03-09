@@ -2,10 +2,14 @@
     <div>
         <h5>Add Todo</h5>
         <form @submit="onSubmit">
-            <input v-model="title" style="width: 50%; display: inline;" 
+            <div class="input-group mb-3" style="width: 50%;">
+                <input v-model="title" 
                 type="text" placeholder="Add todos..."
                 class="form-control">
-            <input style="display: inline; margin-left: 10px;" class="btn btn-outline-success" type="submit" value="SUBMIT">
+                <div class="input-group-append">
+                    <input class="btn btn-outline-success" type="submit" value="SUBMIT">
+                </div>
+            </div>
         </form>
         <!-- <b-form>
             <b-input  

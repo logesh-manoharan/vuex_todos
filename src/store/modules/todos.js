@@ -10,8 +10,10 @@ const getters = {
     allTodos: (state) => {
         return state.todos
     },
-    todosLength: (state) => {
-        return state.todos.length;
+    todosLength: () => {
+        const responseData = actions.lengthTodos();
+        console.log(Object.values(responseData).length);
+        return Object.values(responseData).length;
     }
 };
 
@@ -44,6 +46,22 @@ const actions = {
         const response = await axios.get(`https://jsonplaceholder.typicode.com/todos?_limit=${limit}`);
         console.log("Selected limit: "+ parseInt(l));
         commit('setTodos', response.data);
+    },
+
+    async updateTodo({commit}, updTodo) {
+        const response = await axios.put(
+            `https://jsonplaceholder.typicode.com/todos/${updTodo.id}`,
+            updTodo
+          );
+      
+          console.log(response.data);
+      
+          commit('updateTodo', response.data);
+    },
+
+    async lengthTodos() {
+        const response = await axios.get('https://jsonplaceholder.typicode.com/todos');
+        return response.data;
     }
 };
 
@@ -52,7 +70,13 @@ const actions = {
 const mutations = {
     setTodos: (state, todos) => (state.todos = todos),
     newTodo: (state, todo) => state.todos.unshift(todo),      //unshift() => is used to add the element at the beginning of the list 
-    removeTodo: (state, id) => state.todos = state.todos.filter(todo => todo.id !== id)  
+    removeTodo: (state, id) => state.todos = state.todos.filter(todo => todo.id !== id),
+    updateTodo: (state, updTodo) => {
+        const index = state.todos.findIndex(todo => todo.id === updTodo.id);    // returns the INDEX to update
+        if (index !== -1) {
+            state.todos.splice(index, 1, updTodo);
+        }
+    }
 };
 
 
